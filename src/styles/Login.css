@@ -1,0 +1,82 @@
+/* Login.css */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+
+  min-width: 350px;
+}
+
+.login-form {
+  width: 500px;
+  padding: 30px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-header {
+  padding-bottom: 20px;
+}
+
+.login-form-group {
+  padding-bottom: 10px;
+}
+
+.login-header h1 {
+  margin-bottom: 0;
+  color: #fd5000;
+}
+
+.login-header h2 {
+  margin-bottom: 0;
+  color: #544e4c;
+}
+
+.login-form input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.login-form button {
+  width: 100%;
+  padding: 10px;
+  background-color: #fd5000;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* Media Queries for Responsive Design */
+@media (max-width: 768px) {
+  .login-form {
+    padding: 25px;
+    border-radius: 6px;
+    width: 100%;
+  }
+
+}
+
+@media (max-width: 480px) {
+  .login-form {
+    padding: 15px;
+    border-radius: 6px;
+    width: 100%;
+  }
+
+ 
+}

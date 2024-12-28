@@ -1,0 +1,30 @@
+frontend/
+├── public/                        # Archivos estáticos que no necesitan procesamiento
+│   ├── favicon.ico
+│   ├── index.html                 # Archivo HTML principal
+├── src/
+│   ├── api/                       # Llamadas y utilidades para la API
+│   │   ├── backend.js             # Funciones para interactuar con la API
+│   ├── components/                # Componentes reutilizables de la interfaz
+│   │   ├── Button.jsx             # Componente de botón reutilizable
+│   │   ├── Input.jsx              # Componente de entrada reutilizable
+│   │   ├── Loader.jsx             # Componente de carga (spinner, etc.)
+│   ├── context/                   # Contextos globales para React (como AuthContext)
+│   │   ├── AuthProvider.jsx       # Proveedor de autenticación (manejo del token)
+│   ├── hooks/                     # Custom hooks
+│   │   ├── useAuth.js             # Hook para manejar autenticación
+│   │   ├── useFetch.js            # Hook para hacer fetch requests
+│   ├── pages/                     # Vistas o páginas principales
+│   │   ├── Login.jsx              # Página de inicio de sesión
+│   │   ├── Home.jsx               # Página principal (listado de reservas)
+│   │   ├── CreateReservation.jsx  # Página para añadir una nueva reserva
+│   ├── routes/                    # Definición de rutas de la app
+│   │   ├── AppRouter.jsx          # Configuración de las rutas
+│   ├── styles/                    # Archivos de estilos globales o compartidos
+│   │   ├── globals.css            # Estilos globales de la aplicación
+│   │   ├── Login.css              # Estilos específicos para la pantalla de login
+│   │   ├── Home.css               # Estilos específicos para la pantalla de Home
+│   ├── App.jsx                    # Componente principal de React
+│   ├── main.jsx                   # Punto de entrada principal
+├── package.json                   # Dependencias y scripts
+├── vite.config.js                 # Configuración de Vite
