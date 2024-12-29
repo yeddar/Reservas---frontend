@@ -7,6 +7,8 @@
   background-color: white;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   overflow: auto;
+  align-self: flex-start;
+  margin-top: 2rem;
 
 }
 
@@ -46,7 +48,7 @@
     width: 95%;
   }
   .p-datatable-sm {
-    font-size: 0.9rem; /* Reduce el tamaño del texto */
+    font-size: 0.75rem; /* Reduce el tamaño del texto */
   }
 
   .header h1 {

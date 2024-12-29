@@ -13,13 +13,13 @@ export class Reserva {
 
       // Formato del campo dia_semana
       const diasSemana = {
-        monday: "Lun.",
-        tuesday: "Mar.",
-        wednesday: "Mie.",
-        thursday: "Jue.",
-        friday: "Vie.",
-        saturday: "Sáb.",
-        sunday: "Dom.",
+        monday: "Lun",
+        tuesday: "Mar",
+        wednesday: "Mie",
+        thursday: "Jue",
+        friday: "Vie",
+        saturday: "Sáb",
+        sunday: "Dom",
       };
 
       // Formato del campo 

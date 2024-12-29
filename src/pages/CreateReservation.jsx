@@ -7,6 +7,7 @@ import { Calendar } from 'primereact/calendar';
 import { Dropdown } from 'primereact/dropdown';
 import { Checkbox } from 'primereact/checkbox';
 import { Button } from 'primereact/button';
+import { SplitButton } from 'primereact/splitbutton';
 import "../styles/globals.css"; 
 import "../styles/AddReservationForm.css"; 
 import 'primeicons/primeicons.css'
@@ -15,6 +16,7 @@ import 'primereact/resources/themes/lara-light-indigo/theme.css';
 
 const AddReservationForm = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [reservation, setReservation] = useState({
     dayOfWeek: null,
     time: null,
@@ -23,10 +25,14 @@ const AddReservationForm = () => {
   });
 
   const classOptions = [
-    { label: 'Yoga', value: 'Yoga' },
-    { label: 'Pilates', value: 'Pilates' },
+    { label: 'Cycling', value: 'Cycling' },
+    { label: 'Virtual Cycling', value: 'Virtual Cycling' },
+    { label: 'Body Combat', value: 'Body Combat' },
     { label: 'Zumba', value: 'Zumba' },
+    { label: 'Yoga', value: 'Yoga' },
+    { label: 'GAP', value: 'GAP' },
     { label: 'Body Pump', value: 'Body Pump' },
+    { label: 'Body Balance', value: 'Body Balance' },
   ];
 
   const daysOfWeek = [
@@ -45,6 +51,8 @@ const AddReservationForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setLoading(true);
     
     // Obtener el token de autenticación
     const token = localStorage.getItem('token'); 
@@ -60,8 +68,7 @@ const AddReservationForm = () => {
       dia_semana: reservation.dayOfWeek,
       hora: reservation.time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       centro: 'platero',
-      clase: reservation.classType,
-      recurrente: reservation.isRecurrent,
+      clase: reservation.classType
     };
 
     try {
@@ -141,16 +148,15 @@ const AddReservationForm = () => {
                   />
                 </div>
                 <div className="field">
-                  <Button 
+                  <Button
+                      className='custom-button'
                       label="Añadir Reserva" 
                       icon="pi pi-check" 
-                      type="submit"  
-                      style={{ 
-                          backgroundColor: '#fd5000',
-                          borderColor: '#fd5000'
-                      }}
+                      type="submit" 
+                      loading={loading} 
                   />
                 </div>
+                
             </form>
         </div>
     </div>

@@ -11,7 +11,7 @@
   }
   
   .field label {
-    font-size: 1rem;
+    font-size: 1.5rem;
     font-weight: bold;
     color: #333; /* Texto oscuro para mejor contraste */
     margin-bottom: 0.5rem;
@@ -50,6 +50,7 @@
     border: none;
     font-size: 1rem;
     font-weight: bold;
+    margin-top: 2rem;
   }
   
   .custom-button:hover {
@@ -68,11 +69,11 @@
     }
   
     .field label {
-      font-size: 0.9rem;
+      font-size: 1.4rem;
     }
   
-    .p-button {
-      font-size: 0.9rem;
+    .custom-button {
+      font-size: 1rem;
     }
   }
   
