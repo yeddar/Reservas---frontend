@@ -82,6 +82,8 @@ function Home() {
         navigate("/add-reservation");
     };
 
+    
+
     useEffect(() => {
         fetchReservas();
     }, []);
