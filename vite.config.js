@@ -5,6 +5,7 @@ import react from '@vitejs/plugin-react-swc'
 export default defineConfig({
   plugins: [react()],
   server: {
+    port: 5183,
     // Para reenviar cualquier solicitud que empiece por /api
     proxy: {
       '/api': {

@@ -5,9 +5,9 @@ import { addReserva } from '../api/backend';
 
 import { Calendar } from 'primereact/calendar';
 import { Dropdown } from 'primereact/dropdown';
-import { Checkbox } from 'primereact/checkbox';
+
 import { Button } from 'primereact/button';
-import { SplitButton } from 'primereact/splitbutton';
+
 import "../styles/globals.css"; 
 import "../styles/AddReservationForm.css"; 
 import 'primeicons/primeicons.css'
@@ -60,6 +60,7 @@ const AddReservationForm = () => {
     // Verificar que todos los campos requeridos están completos
     if (!reservation.dayOfWeek || !reservation.time || !reservation.classType) {
       alert('Por favor, completa todos los campos obligatorios.');
+      setLoading(false);
       return;
     }
 
@@ -77,6 +78,7 @@ const AddReservationForm = () => {
       console.log('Reserva creada exitosamente:', nuevaReserva);
       navigate('/home'); // Redirigir al usuario a la página de inicio
     } catch (error) {
+      setLoading(false);
       console.error('Error al crear la reserva:', error.message);
       alert(`Error: ${error.message}`);
     }

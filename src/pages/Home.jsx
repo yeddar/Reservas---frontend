@@ -8,7 +8,6 @@ import "../styles/Home.css";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Button } from "primereact/button";
-import { Tag } from "primereact/tag";
 import Switch from "react-switch";
 import 'primeicons/primeicons.css';
 
@@ -86,6 +85,7 @@ function Home() {
 
     useEffect(() => {
         fetchReservas();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }, []);
 
     const nuevaReservaTemplate = () => (
