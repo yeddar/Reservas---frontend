@@ -47,7 +47,7 @@ const LoginForm = () => {
         setError(response.message || "Error al iniciar sesión");
       }
     } catch (err) {
-      setError("Error en el servidor.");
+      setError(err.message || "Error al iniciar sesión");
     }
     finally {
       setLoading(false); 
