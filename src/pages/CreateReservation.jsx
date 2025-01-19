@@ -33,6 +33,7 @@ const AddReservationForm = () => {
     { label: 'GAP', value: 'GAP' },
     { label: 'Body Pump', value: 'Body Pump' },
     { label: 'Body Balance', value: 'Body Balance' },
+    { label: 'Pilates', value: 'Pilates' },
   ];
 
   const daysOfWeek = [
