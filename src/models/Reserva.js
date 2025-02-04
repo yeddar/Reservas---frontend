@@ -15,7 +15,7 @@ export class Reserva {
       const diasSemana = {
         monday: "Lun",
         tuesday: "Mar",
-        wednesday: "Mie",
+        wednesday: "Mié",
         thursday: "Jue",
         friday: "Vie",
         saturday: "Sáb",
@@ -38,6 +38,30 @@ export class Reserva {
       );
     }
 
+    static ordenarReservas(reservas) {
+      const diasSemanaOrden = {
+        Lun: 1,
+        Mar: 2,
+        Mié: 3,
+        Jue: 4,
+        Vie: 5,
+        Sáb: 6,
+        Dom: 7,
+      };
+  
+      return reservas.sort((a, b) => {
+        const diaA = diasSemanaOrden[a.dia_semana];
+        const diaB = diasSemanaOrden[b.dia_semana];
+  
+        // Primero por el día de la semana
+        if (diaA !== diaB) {
+          return diaA - diaB;
+        }
+  
+        // Luego por la hora
+        return a.hora.localeCompare(b.hora);
+      });
+    }
     
       
      

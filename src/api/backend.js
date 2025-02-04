@@ -42,12 +42,11 @@ export const loginApi = async (username, password) => {
 
 
 /**
- * Obtiene las reservas de un usuario por su ID.
- * @param {string} userId
+ * Obtiene las reservas de un usuario 
  * @param {string} token
  * @returns {Promise<Array>} Lista de reservas.
  */
-export const getReservas = async (userId, token) => {
+export const getReservas = async (token) => {
     const response = await fetch(`${API_BASE_URL}/usuario/reservas`, {
         headers: {
             Authorization: `Bearer ${token}`,

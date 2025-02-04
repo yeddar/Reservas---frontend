@@ -10,9 +10,7 @@ import { Column } from "primereact/column";
 import { Button } from "primereact/button";
 import Switch from "react-switch";
 import 'primeicons/primeicons.css';
-
-        
-        
+  
 
 function Home() {
     const [reservas, setReservas] = useState([]);
@@ -22,13 +20,14 @@ function Home() {
 
     // Obtener reservas y guardarlas en el modelo
     const fetchReservas = async () => {
-        const userId = localStorage.getItem('userId');
+        //const userId = localStorage.getItem('userId');
         const token = localStorage.getItem('token');
 
         try {
-            const data = await getReservas(userId, token);
+            const data = await getReservas(token);
             const reservas_map = data.reservas.map((reserva) => Reserva.fromApi(reserva));
-            setReservas(reservas_map);
+            const reservasOrdenadas = Reserva.ordenarReservas(reservas_map);
+            setReservas(reservasOrdenadas);
         } catch (err) {
             console.error(err);
             navigate('/login');
@@ -81,8 +80,7 @@ function Home() {
         navigate("/add-reservation");
     };
 
-    
-
+  
     useEffect(() => {
         fetchReservas();
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -142,33 +140,32 @@ function Home() {
             //paginator
             //rows={10}
             loading={loading}
-            emptyMessage="No hay reservas disponibles"
+            emptyMessage="Empieza añadiendo una reserva ;)"
             className="p-datatable-sm"
-            tableStyle={{minWidth:"20rem"}}
-         
-          >
+            tableStyle={{minWidth:"20rem"}}>
+            
             <Column
               resizeable="true"
               field="confirmada"
               body={confirmadaTemplate}
             />
             <Column field="dia_semana" header="Día" />
+
             <Column field="hora" header="Hora" />
+
             <Column field="clase" header="Clase" />
-        
-            
-            
+         
             <Column
               field="estado"
               header="Reserva automática"
               body={estadoTemplate}
- 
-              
             />
+            
             <Column 
               body={deleteTemplate} 
               bodyStyle={{ textAlign: 'right' }}
             />
+
           </DataTable>
         </div>
       );
