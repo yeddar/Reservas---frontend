@@ -54,9 +54,6 @@ const AddReservationForm = () => {
     e.preventDefault();
 
     setLoading(true);
-    
-    // Obtener el token de autenticación
-    const token = localStorage.getItem('token'); 
 
     // Verificar que todos los campos requeridos están completos
     if (!reservation.dayOfWeek || !reservation.time || !reservation.classType) {
@@ -75,7 +72,7 @@ const AddReservationForm = () => {
 
     try {
       // Llamar a la función addReserva
-      const nuevaReserva = await addReserva(reservaData, token);
+      const nuevaReserva = await addReserva(reservaData);
       console.log('Reserva creada exitosamente:', nuevaReserva);
       navigate('/home'); // Redirigir al usuario a la página de inicio
     } catch (error) {

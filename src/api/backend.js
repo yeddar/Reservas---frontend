@@ -20,7 +20,10 @@ export const fetchRoot = async () => {
  * @param {string} password - La contraseña del usuario.
  * @returns {Promise<object>} - La respuesta de la API con el token.
  */
-export const loginApi = async (username, password) => {
+export const loginApi = async (username, password, keepSession) => {
+
+    const scopeValue = keepSession ? "keep_session" : "";
+
     const response = await fetch(`${API_BASE_URL}/login/`, {
         method: 'POST',
         headers: {
@@ -29,7 +32,10 @@ export const loginApi = async (username, password) => {
         body: new URLSearchParams({
             username: username,
             password: password,
+            scope: scopeValue, // Enviar el valor de rememberMe
         }).toString(),
+
+        credentials: 'include', // Enviar la cookie con el refresh_token
     });
 
     if (!response.ok) {
@@ -40,18 +46,78 @@ export const loginApi = async (username, password) => {
     return response.json();
 };
 
+export const refreshAccessToken = async () => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/refresh/`, {
+            method: 'POST',
+            credentials: 'include', // 🔹 IMPORTANTE: Enviar la cookie con el refresh_token
+        });
+
+        if (!response.ok) {
+            throw new Error('No se pudo refrescar el token');
+        }
+
+        const data = await response.json();
+
+        // Guardar el nuevo access_token en localStorage
+        localStorage.setItem('access_token', data.access_token);
+
+        return true;
+    } catch (error) {
+        console.error(error);
+        localStorage.removeItem('access_token'); // Borrar el token inválido
+        return false;
+    }
+};
+
+
+export const authFetch = async (url, options = {}) => {
+    let accessToken = localStorage.getItem('access_token');
+
+    // Configurar headers y autenticación
+    options.headers = {
+        ...options.headers,
+        'Content-Type': 'application/json',
+    };
+
+    if (accessToken) {
+        options.headers['Authorization'] = `Bearer ${accessToken}`;
+    } 
+    
+    options.credentials = 'include'; // Para enviar la cookie del refresh_token
+
+    // Hacer la solicitud
+    let response = await fetch(`${url}`, options);
+
+    // Si el access token expiró, intentamos renovarlo
+    if (response.status === 401) {
+        console.log("Access token expirado. Intentando refrescar...");
+
+        const refreshSuccess = await refreshAccessToken();
+        if (refreshSuccess) {
+            accessToken = localStorage.getItem('access_token'); // Obtener el nuevo token
+            options.headers['Authorization'] = `Bearer ${accessToken}`;
+
+            // Reintentar la petición original
+            response = await fetch(`${url}`, options);
+        } else {
+            console.error("No se pudo refrescar el token. Redirigiendo a login...");
+            window.location.href = "/login"; // Si el refresh falla, redirigir al login
+            return;
+        }
+    }
+
+    return response;
+};
+
 
 /**
  * Obtiene las reservas de un usuario 
- * @param {string} token
  * @returns {Promise<Array>} Lista de reservas.
  */
-export const getReservas = async (token) => {
-    const response = await fetch(`${API_BASE_URL}/usuario/reservas`, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    });
+export const getReservas = async () => {
+
+    const response = await authFetch(`${API_BASE_URL}/usuario/reservas`, { method: 'GET' });
 
     if (!response.ok) {
         throw new Error('Error al obtener las reservas');
@@ -64,17 +130,13 @@ export const getReservas = async (token) => {
 /**
  * Modifica una reserva existente
  * @param {object} reservaData
- * @param {string} token
  * @returns {Promise<Array>} Lista de reservas.
  */
-export const updateEstadoReserva = async (reservaId, reservaData, token) => {
-    const response = await fetch(`${API_BASE_URL}/usuario/reserva/${reservaId}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(reservaData),
+export const updateEstadoReserva = async (reservaId, reservaData) => {
+
+    const response = await authFetch(`${API_BASE_URL}/usuario/reserva/${reservaId}`, {
+        method: 'PUT', 
+        body: JSON.stringify(reservaData)
     });
 
     if (!response.ok) {
@@ -88,18 +150,13 @@ export const updateEstadoReserva = async (reservaId, reservaData, token) => {
 /**
  * Elimina una reserva por su ID.
  * @param {number} reservaId
- * @param {string} token
  * @returns {Promise<void>}
  */
-export const deleteReserva = async (reservaId, token) => {
-    const response = await fetch(`${API_BASE_URL}/usuario/reserva/${reservaId}`, {
+export const deleteReserva = async (reservaId) => {
+    const response = await authFetch(`${API_BASE_URL}/usuario/reserva/${reservaId}`, {
         method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-        },
     });
-
+    
     if (!response.ok) {
         throw new Error('Error al eliminar la reserva');
     }
@@ -108,16 +165,11 @@ export const deleteReserva = async (reservaId, token) => {
 /**
  * Añade una nueva reserva.
  * @param {object} reservaData
- * @param {string} token
  * @returns {Promise<object>} La reserva creada.
  */
-export const addReserva = async (reservaData, token) => {
-    const response = await fetch(`${API_BASE_URL}/usuario/reserva`, {
+export const addReserva = async (reservaData) => {
+    const response = await authFetch(`${API_BASE_URL}/usuario/reserva`, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-        },
         body: JSON.stringify(reservaData),
     });
 

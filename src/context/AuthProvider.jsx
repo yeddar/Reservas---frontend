@@ -3,17 +3,17 @@ import React, { createContext, useState, useEffect } from 'react';
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [token, setToken] = useState(localStorage.getItem('token') || null);
+    const [token, setToken] = useState(localStorage.getItem('access_token') || null);
 
     const login = (email, newToken) => {
-        localStorage.setItem('userId', email);
-        localStorage.setItem('token', newToken);
+        localStorage.setItem('user_mail', email);
+        localStorage.setItem('access_token', newToken);
         setToken(newToken);
     };
 
     const logout = () => {
-        localStorage.removeItem('userId');
-        localStorage.removeItem('token');
+        localStorage.removeItem('user_mail');
+        localStorage.removeItem('access_token');
         setToken(null);
     };
 

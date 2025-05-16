@@ -6,6 +6,9 @@ import { Button } from 'primereact/button';
 import "../styles/globals.css"; // Importa los estilos generales
 import "../styles/Login.css"; // Importa los estilos específicos del login
 
+
+
+
 const LoginForm = () => {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext); // Manejo de autenticación del contexto global
@@ -18,6 +21,13 @@ const LoginForm = () => {
   });
 
   const [error, setError] = useState(null); // Estado para manejar errores del login
+
+  const [rememberMe, setRememberMe] = useState(false); // Estado para recordar al usuario
+
+  const handleKeepSessionChange = (e) => {
+    const { checked } = e.target;
+    setRememberMe(checked); // Cambia el estado de recordar sesión
+  }
 
   // Manejar cambios en los campos del formulario
   const handleChange = (e) => {
@@ -37,7 +47,7 @@ const LoginForm = () => {
 
     try {
       // Llamada a la API para autenticar al usuario
-      const response = await loginApi(formData.email, formData.password);
+      const response = await loginApi(formData.email, formData.password, rememberMe);
 
       // Si el login es exitoso
       if (response.access_token) {
@@ -88,6 +98,22 @@ const LoginForm = () => {
             placeholder="Introduce tu contraseña asociada"
           />
         </div>
+ 
+        <div className="checkbox-wrapper">
+          <input
+            type="checkbox"
+            id="keepSession"
+            name="keepSession"
+            checked={rememberMe}
+            onChange={handleKeepSessionChange}
+            className="custom-checkbox"
+          />
+          <label htmlFor="keepSession" className="checkbox-label">
+            <span className="checkbox-custom"></span>
+            Recuérdame
+          </label>
+        </div>
+
         {error && <div className="error-message">{error}</div>} {/* Mostrar errores */}
       
         <Button

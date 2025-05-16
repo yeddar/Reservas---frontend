@@ -10,7 +10,7 @@ function AppRouter() {
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/home" element={<Home />} />
                 <Route path='/add-reservation' element={<AddReservationForm />} />
-                <Route path="*" element={<LoginPage />} />
+                <Route path="*" element={<Home />} />
             </Routes>
         </Router>
     );

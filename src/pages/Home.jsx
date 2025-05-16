@@ -10,6 +10,7 @@ import { Column } from "primereact/column";
 import { Button } from "primereact/button";
 import Switch from "react-switch";
 import 'primeicons/primeicons.css';
+
   
 
 function Home() {
@@ -20,26 +21,24 @@ function Home() {
 
     // Obtener reservas y guardarlas en el modelo
     const fetchReservas = async () => {
-        //const userId = localStorage.getItem('userId');
-        const token = localStorage.getItem('token');
-
+ 
         try {
-            const data = await getReservas(token);
+            const data = await getReservas();
             const reservas_map = data.reservas.map((reserva) => Reserva.fromApi(reserva));
             const reservasOrdenadas = Reserva.ordenarReservas(reservas_map);
             setReservas(reservasOrdenadas);
         } catch (err) {
             console.error(err);
-            navigate('/login');
+            //navigate('/login');
         } finally {
             setLoading(false);
           }
     };
 
     const handleDelete = async (reservaId) => {
-        const token = localStorage.getItem('token');
+  
         try {
-            await deleteReserva(reservaId, token);
+            await deleteReserva(reservaId);
             fetchReservas(); // Refrescar la lista
         } catch (err) {
             console.error(err);
@@ -47,7 +46,6 @@ function Home() {
     };
 
     const handleSwitchChange = async (idReserva, newValue) => {
-      const token = localStorage.getItem("token");
       
       try {
         setReservas((prevReservas) =>
@@ -62,7 +60,7 @@ function Home() {
         };
 
         // Llama a la API para actualizar la reserva en el servidor
-        await updateEstadoReserva(idReserva, updatedReserva, token); 
+        await updateEstadoReserva(idReserva, updatedReserva); 
 
       } catch (err) {
         // Si ocurre un error, opcionalmente puedes revertir el cambio local
@@ -80,12 +78,36 @@ function Home() {
         navigate("/add-reservation");
     };
 
+    const handleLogout = () => {
+        localStorage.removeItem('user_mail');
+        localStorage.removeItem('access_token');
+        navigate("/login");
+    }
+
   
     useEffect(() => {
         fetchReservas();
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, []);
 
+    const logoutTemplate = () => (
+
+      <Button 
+        icon="pi pi-sign-out"
+        style={{ 
+          borderColor: 'rgb(245, 245, 245)',
+          backgroundColor: 'rgb(245, 245, 245)', 
+          color: 'rgb(51, 51, 51)',
+          width: '2.3rem', 
+          height: '2.3rem', 
+          transform: 'rotate(180deg)' 
+        }} 
+        rounded 
+        aria-label="Salir" 
+        onClick={() => handleLogout()}
+      />
+
+    )
     const nuevaReservaTemplate = () => (
       <Button 
         icon="pi pi-plus" 
@@ -130,6 +152,7 @@ function Home() {
     return (
         <div className="home-container">
             <div className='header'>
+              {logoutTemplate()}
               <h1>Mis Reservas</h1>
               {nuevaReservaTemplate()}
             </div>
